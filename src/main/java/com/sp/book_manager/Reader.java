@@ -39,15 +39,18 @@ class Reader extends DomainObject {
             // add frequent borrower points
             frequentBorrowerPoints ++;
             // add bonus for a two day new release borrow
-            if ((each.copy().book().priceCode() == Book.NEW_RELEASE) && each.daysBorrowed() > 1) frequentBorrowerPoints ++;
+            if ((each.copy().book().priceCode() == Book.NEW_RELEASE) 
+                 && each.daysBorrowed() > 1) frequentBorrowerPoints ++;
 
             //show figures for this borrow
-            result += "\t" + each.copy().book().name()+ "\t" + String.valueOf(thisAmount) + "\n";
+            result += "\t" + each.copy().book().name()
+                   + "\t" + String.valueOf(thisAmount) + "\n";
 
         }
         //add footer lines
         result +=  "Amount owed is " + String.valueOf(totalAmount) + "\n";
-        result += "You earned " + String.valueOf(frequentBorrowerPoints) + " frequent borrower points";
+        result += "You earned " + String.valueOf(frequentBorrowerPoints) 
+               + " frequent borrower points";
         return result;
 
     }
