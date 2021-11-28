@@ -10,59 +10,59 @@ class Reader extends DomainObject {
 
     public String statement() {
         double totalAmount = 0;
-        int frequentBorrowerPoints = 0;
-        Enumeration<Borrow> borrows = _borrows.elements();
-        String result = "Borrow Record for " + name() + "\n";
-        while (borrows.hasMoreElements()) {
+        int frequentLendingerPoints = 0;
+        Enumeration<Lending> lendings = _lendings.elements();
+        String result = "Lending Record for " + name() + "\n";
+        while (lendings.hasMoreElements()) {
             double thisAmount = 0;
-            Borrow each = (Borrow) borrows.nextElement();
+            Lending each = (Lending) lendings.nextElement();
 
             //determine amounts for each line
             switch (each.copy().book().priceCode()) {
                 case Book.REGULAR:
                     thisAmount += 2;
-                    if (each.daysBorrowed() > 2)
-                        thisAmount += (each.daysBorrowed() - 2) * 1.5;
+                    if (each.daysLent() > 2)
+                        thisAmount += (each.daysLent() - 2) * 1.5;
                     break;
                 case Book.NEW_RELEASE:
-                    thisAmount += each.daysBorrowed() * 3;
+                    thisAmount += each.daysLent() * 3;
                     break;
                 case Book.CHILDRENS:
                     thisAmount += 1.5;
-                    if (each.daysBorrowed() > 3)
-                        thisAmount += (each.daysBorrowed() - 3) * 1.5;
+                    if (each.daysLent() > 3)
+                        thisAmount += (each.daysLent() - 3) * 1.5;
                     break;
 
             }
             totalAmount += thisAmount;
 
-            // add frequent borrower points
-            frequentBorrowerPoints ++;
-            // add bonus for a two day new release borrow
+            // add frequent lendinger points
+            frequentLendingerPoints ++;
+            // add bonus for a two day new release lending
             if ((each.copy().book().priceCode() == Book.NEW_RELEASE) 
-                 && each.daysBorrowed() > 1) frequentBorrowerPoints ++;
+                 && each.daysLent() > 1) frequentLendingerPoints ++;
 
-            //show figures for this borrow
+            //show figures for this lending
             result += "\t" + each.copy().book().name()
                    + "\t" + String.valueOf(thisAmount) + "\n";
 
         }
         //add footer lines
         result +=  "Amount owed is " + String.valueOf(totalAmount) + "\n";
-        result += "You earned " + String.valueOf(frequentBorrowerPoints) 
-               + " frequent borrower points";
+        result += "You earned " + String.valueOf(frequentLendingerPoints) 
+               + " frequent lendinger points";
         return result;
 
     }
 
-    public void addBorrow(Borrow arg) {
-    	_borrows.addElement(arg);
+    public void addLending(Lending arg) {
+    	_lendings.addElement(arg);
     }
 
     public void persist() {
     	Registrar.add("Readers", this);
     }
     
-    private Vector<Borrow> _borrows = new Vector<Borrow>();
+    private Vector<Lending> _lendings = new Vector<Lending>();
 }
 
