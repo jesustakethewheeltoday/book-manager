@@ -64,5 +64,5 @@ class Reader extends DomainObject {
     }
     
     private Vector<Borrow> _borrows = new Vector<Borrow>();
-    }
+}
 
